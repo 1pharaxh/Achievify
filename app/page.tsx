@@ -8,7 +8,16 @@ import {
   DisplayOption,
 } from "gantt-task-react";
 import "gantt-task-react/dist/index.css";
+import GitHubCalendar from "react-github-contribution-calendar";
 const currentDate = new Date();
+const values = {
+  "2016-06-23": 1,
+  "2016-06-26": 2,
+  "2016-06-27": 3,
+  "2016-06-28": 4,
+  "2016-06-29": 4,
+};
+const until = "2016-06-30";
 
 const tasks: Task[] = [
   {
@@ -97,10 +106,21 @@ const tasks: Task[] = [
   },
 ];
 
+const weekLabelAttributes = {}; // Add your attributes here
+const monthLabelAttributes = {}; // Add your attributes here
+const panelAttributes = {}; // Add your attributes here
+
 export default function Home() {
   return (
     <main className="p-10">
       <Gantt tasks={tasks} columnWidth={100} listCellWidth="100px" />
+      <GitHubCalendar
+        weekLabelAttributes={weekLabelAttributes}
+        monthLabelAttributes={monthLabelAttributes}
+        panelAttributes={panelAttributes}
+        values={values}
+        until={until}
+      />
     </main>
   );
 }

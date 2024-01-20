@@ -18,10 +18,18 @@ export function RecentSales({
     let temp = [...tasks];
     for (let i = 0; i < temp.length; i++) {
       if (temp[i].id === id) {
-        if (temp[i].progress === 45) temp[i].progress = 100;
-        if (temp[i].progress === 0) temp[i].progress = 45;
-        if (temp[i].progress === 100) temp[i].progress = 0;
-        break;
+        if (temp[i].progress === 45) {
+          temp[i].progress = 100;
+          break;
+        }
+        if (temp[i].progress === 0) {
+          temp[i].progress = 45;
+          break;
+        }
+        if (temp[i].progress === 100) {
+          temp[i].progress = 0;
+          break;
+        }
       }
     }
     setTasks(temp);
@@ -70,7 +78,7 @@ export function RecentSales({
                     changeProgress(task.id);
                   }}
                 >
-                  {task.progress === 0 ? (
+                  {task.progress === 0 || task.progress === 45 ? (
                     <CheckIcon className="w-5 h-5" />
                   ) : (
                     <Cross1Icon className="w-5 h-5" />

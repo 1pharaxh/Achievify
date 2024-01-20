@@ -5,7 +5,7 @@ import TaskListCard from "@/components/ui/TaskListCard";
 
 import AddTaskButton from "@/components/ui/AddTaskButton";
 import { tasks } from "./tasks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Task } from "gantt-task-react";
 
 export default function Home() {

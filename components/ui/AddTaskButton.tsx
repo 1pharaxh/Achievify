@@ -27,8 +27,7 @@ const AddTaskButton = ({ taskList, setTasksList }: Props) => {
   const [date, setDate] = React.useState<Date | undefined>();
   const [endDate, setEndDate] = React.useState<Date | undefined>();
   const [name, setName] = React.useState<string>("");
-  const dialogRef = React.useRef<HTMLDivElement>(null);
-  const [type, setType] = React.useState<string>();
+  const [type, setType] = React.useState<string>("task");
 
   const onSubmit = () => {
     // get the values from the form
@@ -56,12 +55,12 @@ const AddTaskButton = ({ taskList, setTasksList }: Props) => {
         type: type as TaskType,
       });
       setTasksList(temp);
-    } else if (temp.length > 1 && date && endDate && type) {
+    } else {
       temp.push({
         id: Math.random().toString(36).substr(2, 9),
         name: name,
-        start: date,
-        end: endDate,
+        start: date?.getTime() ? date : new Date(),
+        end: endDate?.getTime() ? endDate : new Date(),
         dependencies: [temp[temp.length - 1].id],
         progress: 0,
         displayOrder: temp.length + 1,

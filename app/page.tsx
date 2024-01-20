@@ -40,13 +40,7 @@ export default function Home() {
         <TabsList>
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="analytics" disabled>
-            Analytics
-          </TabsTrigger>
-          <TabsTrigger value="reports" disabled>
-            Reports
-          </TabsTrigger>
-          <TabsTrigger value="notifications" disabled>
-            Notifications
+            Settings
           </TabsTrigger>
         </TabsList>
         <TabsContent value="overview" className="space-y-4">

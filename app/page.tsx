@@ -1,15 +1,19 @@
 "use client";
-import {
-  Gantt,
-  Task,
-  EventOption,
-  StylingOption,
-  ViewMode,
-  DisplayOption,
-} from "gantt-task-react";
+import { Gantt } from "gantt-task-react";
 import "gantt-task-react/dist/index.css";
 import GitHubCalendar from "react-github-contribution-calendar";
-const currentDate = new Date();
+import { tasks } from "./tasks";
+import { Tabs, TabsList, TabsContent, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+
 const values = {
   "2016-06-23": 1,
   "2016-06-26": 2,
@@ -19,108 +23,168 @@ const values = {
 };
 const until = "2016-06-30";
 
-const tasks: Task[] = [
-  {
-    start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
-    end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 15),
-    name: "Some Project",
-    id: "ProjectSample",
-    progress: 25,
-    type: "project",
-    hideChildren: false,
-    displayOrder: 1,
-  },
-  {
-    start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
-    end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 2, 12, 28),
-    name: "Idea",
-    id: "Task 0",
-    progress: 45,
-    type: "task",
-    project: "ProjectSample",
-    displayOrder: 2,
-  },
-  {
-    start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 2),
-    end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 4, 0, 0),
-    name: "Research",
-    id: "Task 1",
-    progress: 25,
-    dependencies: ["Task 0"],
-    type: "task",
-    project: "ProjectSample",
-    displayOrder: 3,
-  },
-  {
-    start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 4),
-    end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 8, 0, 0),
-    name: "Discussion with team",
-    id: "Task 2",
-    progress: 10,
-    dependencies: ["Task 1"],
-    type: "task",
-    project: "ProjectSample",
-    displayOrder: 4,
-  },
-  {
-    start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 8),
-    end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 9, 0, 0),
-    name: "Developing",
-    id: "Task 3",
-    progress: 2,
-    dependencies: ["Task 2"],
-    type: "task",
-    project: "ProjectSample",
-    displayOrder: 5,
-  },
-  {
-    start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 8),
-    end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 10),
-    name: "Review",
-    id: "Task 4",
-    type: "task",
-    progress: 70,
-    dependencies: ["Task 2"],
-    project: "ProjectSample",
-    displayOrder: 6,
-  },
-  {
-    start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 15),
-    end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 15),
-    name: "Release",
-    id: "Task 6",
-    progress: currentDate.getMonth(),
-    type: "milestone",
-    dependencies: ["Task 4"],
-    project: "ProjectSample",
-    displayOrder: 7,
-  },
-  {
-    start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 18),
-    end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 19),
-    name: "Party Time",
-    id: "Task 9",
-    progress: 0,
-    isDisabled: true,
-    type: "task",
-  },
-];
-
 const weekLabelAttributes = {}; // Add your attributes here
 const monthLabelAttributes = {}; // Add your attributes here
 const panelAttributes = {}; // Add your attributes here
 
 export default function Home() {
   return (
-    <main className="p-10">
-      <Gantt tasks={tasks} columnWidth={100} listCellWidth="100px" />
-      <GitHubCalendar
-        weekLabelAttributes={weekLabelAttributes}
-        monthLabelAttributes={monthLabelAttributes}
-        panelAttributes={panelAttributes}
-        values={values}
-        until={until}
-      />
+    <main className="flex-1 space-y-4 p-8 pt-6">
+      <div className="flex items-center justify-between space-y-2">
+        <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
+        <div className="flex items-center space-x-2">
+          <Button>Download</Button>
+        </div>
+      </div>
+      <Tabs defaultValue="overview" className="space-y-4">
+        <TabsList>
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="analytics" disabled>
+            Analytics
+          </TabsTrigger>
+          <TabsTrigger value="reports" disabled>
+            Reports
+          </TabsTrigger>
+          <TabsTrigger value="notifications" disabled>
+            Notifications
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="overview" className="space-y-4">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Total Revenue
+                </CardTitle>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  className="h-4 w-4 text-muted-foreground"
+                >
+                  <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                </svg>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">$45,231.89</div>
+                <p className="text-xs text-muted-foreground">
+                  +20.1% from last month
+                </p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Subscriptions
+                </CardTitle>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  className="h-4 w-4 text-muted-foreground"
+                >
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">+2350</div>
+                <p className="text-xs text-muted-foreground">
+                  +180.1% from last month
+                </p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Sales</CardTitle>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  className="h-4 w-4 text-muted-foreground"
+                >
+                  <rect width="20" height="14" x="2" y="5" rx="2" />
+                  <path d="M2 10h20" />
+                </svg>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">+12,234</div>
+                <p className="text-xs text-muted-foreground">
+                  +19% from last month
+                </p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Active Now
+                </CardTitle>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  className="h-4 w-4 text-muted-foreground"
+                >
+                  <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                </svg>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">+573</div>
+                <p className="text-xs text-muted-foreground">
+                  +201 since last hour
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+            <Card className="col-span-4">
+              <CardHeader>
+                <CardTitle>Overview</CardTitle>
+                <CardDescription>
+                  Loren ipsum dolor sit amet, consectetur adipiscing elit.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="pl-2">
+                <Gantt tasks={tasks} columnWidth={100} listCellWidth="100px" />
+              </CardContent>
+            </Card>
+            <Card className="col-span-3">
+              <CardHeader>
+                <CardTitle>Recent Sales</CardTitle>
+                <CardDescription>
+                  Loren ipsum dolor sit amet, consectetur adipiscing elit.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <GitHubCalendar
+                  weekLabelAttributes={weekLabelAttributes}
+                  monthLabelAttributes={monthLabelAttributes}
+                  panelAttributes={panelAttributes}
+                  values={values}
+                  until={until}
+                />
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+      </Tabs>
     </main>
   );
 }

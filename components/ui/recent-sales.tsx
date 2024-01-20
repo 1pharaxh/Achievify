@@ -47,7 +47,7 @@ export function RecentSales({
     setTasksList(temp);
   }, [tasks, tabValue]);
   return (
-    <ScrollArea className="h-[400px]">
+    <ScrollArea className="h-[100px]">
       <div className="space-y-8">
         {tasksList.map((task) => (
           <div key={task.id} className="flex items-center">

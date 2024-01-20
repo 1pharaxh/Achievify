@@ -7,6 +7,8 @@ import AddTaskButton from "@/components/ui/AddTaskButton";
 import { tasks } from "./tasks";
 import { useEffect, useState } from "react";
 import { Task } from "gantt-task-react";
+import ProjectCompletionCard from "@/components/ui/ProjectCompletionCard";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function Home() {
   const [tasksList, setTasksList] = useState<Task[]>([]);
@@ -26,10 +28,11 @@ export default function Home() {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="overview" className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-            <GantCard tasks={tasksList} />
+          <div className="grid gap-4 md:grid-cols-2 ">
+            <ProjectCompletionCard tasksList={tasksList} />
             <TaskListCard setTasks={setTasksList} tasks={tasksList} />
           </div>
+          <GantCard tasks={tasksList} />
         </TabsContent>
       </Tabs>
     </main>

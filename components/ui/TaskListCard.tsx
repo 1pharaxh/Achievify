@@ -12,6 +12,7 @@ import { PlusIcon } from "@radix-ui/react-icons";
 import { RecentSales } from "./recent-sales";
 import { Separator } from "./separator";
 import { Tabs, TabsList, TabsTrigger } from "./tabs";
+import { Task } from "gantt-task-react";
 const values = {
   "2016-06-23": 10,
   "2016-06-26": 2,
@@ -24,11 +25,15 @@ const until = "2016-06-30";
 const weekLabelAttributes = {}; // Add your attributes here
 const monthLabelAttributes = {}; // Add your attributes here
 const panelAttributes = {}; // Add your attributes here
-type Props = {};
+type Props = {
+  tasks: Task[];
+  setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
+};
 
-const TaskListCard = (props: Props) => {
+const TaskListCard = ({ tasks, setTasks }: Props) => {
+  const [tabValue, setTabValue] = React.useState<string>("Not Started");
   return (
-    <Card className="col-span-3">
+    <Card className="col-span-3 h-[500px]">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <div className="flex flex-col gap-1.5">
           <CardTitle>Task List</CardTitle>
@@ -37,7 +42,13 @@ const TaskListCard = (props: Props) => {
           </CardDescription>
         </div>
 
-        <Tabs defaultValue="Not Started" className="space-y-4">
+        <Tabs
+          onValueChange={(value) => {
+            setTabValue(value);
+          }}
+          defaultValue="Not Started"
+          className="space-y-4"
+        >
           <TabsList>
             <TabsTrigger value="Completed">Completed</TabsTrigger>
             <TabsTrigger value="In Progress">In Progress</TabsTrigger>
@@ -54,7 +65,7 @@ const TaskListCard = (props: Props) => {
         values={values}
         until={until}
       /> */}
-        <RecentSales />
+        <RecentSales tabValue={tabValue} setTasks={setTasks} tasks={tasks} />
       </CardContent>
     </Card>
   );

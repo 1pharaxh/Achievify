@@ -1,67 +1,86 @@
+import { Task } from "gantt-task-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
+import { ScrollArea } from "./scroll-area";
+import { Button } from "./button";
+import { CheckIcon, Cross1Icon, Pencil1Icon } from "@radix-ui/react-icons";
+import React, { useEffect } from "react";
 
-export function RecentSales() {
+export function RecentSales({
+  tasks,
+  tabValue,
+  setTasks,
+}: {
+  tasks: Task[];
+  tabValue: string;
+  setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
+}) {
+  const changeProgress = (id: string) => {
+    let temp = [...tasks];
+    for (let i = 0; i < temp.length; i++) {
+      if (temp[i].id === id) {
+        if (temp[i].progress === 45) temp[i].progress = 100;
+        if (temp[i].progress === 0) temp[i].progress = 45;
+        if (temp[i].progress === 100) temp[i].progress = 0;
+        break;
+      }
+    }
+    setTasks(temp);
+  };
+  const [tasksList, setTasksList] = React.useState<Task[]>([]);
+  useEffect(() => {
+    let temp = [...tasks];
+    if (tabValue === "Completed") {
+      temp = temp.filter((task) => task.progress === 100);
+    } else if (tabValue === "In Progress") {
+      temp = temp.filter((task) => task.progress === 45);
+    } else if (tabValue === "Not Started") {
+      temp = temp.filter((task) => task.progress === 0);
+    }
+    setTasksList(temp);
+  }, [tasks, tabValue]);
   return (
-    <div className="space-y-8">
-      <div className="flex items-center">
-        <Avatar className="h-9 w-9">
-          <AvatarImage src="/avatars/01.png" alt="Avatar" />
-          <AvatarFallback>OM</AvatarFallback>
-        </Avatar>
-        <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">Olivia Martin</p>
-          <p className="text-sm text-muted-foreground">
-            olivia.martin@email.com
-          </p>
-        </div>
-        <div className="ml-auto font-medium">+$1,999.00</div>
+    <ScrollArea className="h-[400px]">
+      <div className="space-y-8">
+        {tasksList.map((task) => (
+          <div key={task.id} className="flex items-center">
+            <Avatar className="h-9 w-9">
+              <AvatarFallback>{task.name[0]}</AvatarFallback>
+            </Avatar>
+            <div className="ml-4 space-y-1">
+              <p className="text-sm font-medium leading-none">{task.name}</p>
+              <p className="text-sm text-muted-foreground">
+                {task.start.toLocaleDateString()} -{" "}
+                {task.end.toLocaleDateString()}
+              </p>
+            </div>
+            <div className="ml-auto flex items-center justify-center gap-4">
+              <div
+                className={`font-medium
+              ${tabValue === "Completed" ? "text-green-500" : ""}
+              ${tabValue === "In Progress" ? "text-yellow-500" : ""}
+              ${tabValue === "Not Started" ? "text-red-500" : ""}
+              `}
+              >
+                {tabValue}
+              </div>
+              <div>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    changeProgress(task.id);
+                  }}
+                >
+                  {task.progress === 0 ? (
+                    <CheckIcon className="w-5 h-5" />
+                  ) : (
+                    <Cross1Icon className="w-5 h-5" />
+                  )}
+                </Button>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
-      <div className="flex items-center">
-        <Avatar className="flex h-9 w-9 items-center justify-center space-y-0 border">
-          <AvatarImage src="/avatars/02.png" alt="Avatar" />
-          <AvatarFallback>JL</AvatarFallback>
-        </Avatar>
-        <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">Jackson Lee</p>
-          <p className="text-sm text-muted-foreground">jackson.lee@email.com</p>
-        </div>
-        <div className="ml-auto font-medium">+$39.00</div>
-      </div>
-      <div className="flex items-center">
-        <Avatar className="h-9 w-9">
-          <AvatarImage src="/avatars/03.png" alt="Avatar" />
-          <AvatarFallback>IN</AvatarFallback>
-        </Avatar>
-        <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">Linh 🥰 Nguyen</p>
-          <p className="text-sm text-muted-foreground">
-            Linh 🥰.nguyen@email.com
-          </p>
-        </div>
-        <div className="ml-auto font-medium">+$299.00</div>
-      </div>
-      <div className="flex items-center">
-        <Avatar className="h-9 w-9">
-          <AvatarImage src="/avatars/04.png" alt="Avatar" />
-          <AvatarFallback>WK</AvatarFallback>
-        </Avatar>
-        <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">William Kim</p>
-          <p className="text-sm text-muted-foreground">will@email.com</p>
-        </div>
-        <div className="ml-auto font-medium">+$99.00</div>
-      </div>
-      <div className="flex items-center">
-        <Avatar className="h-9 w-9">
-          <AvatarImage src="/avatars/05.png" alt="Avatar" />
-          <AvatarFallback>SD</AvatarFallback>
-        </Avatar>
-        <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">Sofia Davis</p>
-          <p className="text-sm text-muted-foreground">sofia.davis@email.com</p>
-        </div>
-        <div className="ml-auto font-medium">+$39.00</div>
-      </div>
-    </div>
+    </ScrollArea>
   );
 }

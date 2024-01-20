@@ -7,12 +7,13 @@ import {
   CardContent,
 } from "./card";
 import { Tabs, TabsList, TabsTrigger } from "./tabs";
-import { Gantt, ViewMode } from "gantt-task-react";
-import { tasks } from "@/app/tasks";
+import { Gantt, Task, ViewMode } from "gantt-task-react";
 
-type Props = {};
+type Props = {
+  tasks: Task[];
+};
 
-export default function GantCard({}: Props) {
+export default function GantCard({ tasks }: Props) {
   const [view, setView] = React.useState<ViewMode>(ViewMode.Day);
   return (
     <Card className="col-span-4">
@@ -41,12 +42,19 @@ export default function GantCard({}: Props) {
         </Tabs>
       </CardHeader>
       <CardContent className="pl-2">
-        <Gantt
-          viewMode={view}
-          tasks={tasks}
-          columnWidth={100}
-          listCellWidth=""
-        />
+        {tasks.length > 0 ? (
+          <Gantt
+            viewMode={view}
+            tasks={tasks}
+            columnWidth={100}
+            listCellWidth=""
+          />
+        ) : (
+          <div className="flex flex-col items-center justify-center h-96">
+            <p className="text-2xl font-semibold">No tasks added</p>
+            <p className="text-gray-500">Add a task to see it here.</p>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
